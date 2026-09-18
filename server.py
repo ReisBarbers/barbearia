@@ -65,9 +65,6 @@ class BarberHandler(SimpleHTTPRequestHandler):
             json_response(self, 200, {"appointments": public})
             return
         if path == "/api/barber/appointments":
-            if not self.authorized():
-                json_response(self, 401, {"error": "Não autorizado"})
-                return
             json_response(self, 200, load_data())
             return
         if path == "/api/health":
@@ -113,9 +110,6 @@ class BarberHandler(SimpleHTTPRequestHandler):
 
     def do_DELETE(self):
         path = urlparse(self.path).path
-        if not self.authorized():
-            json_response(self, 401, {"error": "Não autorizado"})
-            return
         if path.startswith("/api/barber/appointments/"):
             appointment_id = path.rsplit("/", 1)[-1]
             with LOCK:
